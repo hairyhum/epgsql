@@ -121,7 +121,8 @@ decode_uuid(<<U0:32, U1:16, U2:16, U3:16, U4:48>>) ->
     iolist_to_binary(io_lib:format(Format, [U0, U1, U2, U3, U4])).
 
 encode_point({X, Y}) when is_number(X), is_number(Y) ->
-    <<X:1/big-float-unit:64, Y:1/big-float-unit:64>>.
+    Bin = <<X:1/big-float-unit:64, Y:1/big-float-unit:64>>,
+    <<(byte_size(Bin)):?int32, Bin/binary>>.
 
 decode_point(<<X:1/big-float-unit:64, Y:1/big-float-unit:64>>) ->
     {X, Y}.
